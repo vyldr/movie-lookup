@@ -4,9 +4,20 @@ const express = require("express");
 const app = express();
 const port = 3000;
 
+// Serve static files from a directory
+app.use(express.static('../webapp/dist'));
+
+
 // Search for movies by title
 app.get("/movies", (req, res) => {
   var search = req.query.search;
+  console.log(search);
+
+  // Check for no query
+  if (!search) {
+    res.send([]);
+    return;
+  }
   var url = `https://api.themoviedb.org/3/search/movie?region=US&language=en-US&page=1&include_adult=false&api_key=${process.env.API_KEY}&query=${search}`;
 
   // Search using TMDB API
